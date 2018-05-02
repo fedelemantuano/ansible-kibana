@@ -1,0 +1,13 @@
+---
+
+- name: Include optional user and group creation.
+  when: (kibana_user_id is defined) and (kibana_group_id is defined)
+  include: kibana-optional-user.yml
+
+- name: Include specific Kibana
+  include: kibana-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Include specific Kibana
+  include: kibana-RedHat.yml
+  when: ansible_os_family == 'RedHat'

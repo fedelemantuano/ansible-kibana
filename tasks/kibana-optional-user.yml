@@ -1,0 +1,22 @@
+---
+# Add the kibana user before installing from packages.
+- name: Ensure optional elasticsearch group is created with the correct id.
+  become: yes
+  notify: restart kibana
+  group:
+    state: present
+    name: "{{ kibana_group }}"
+    system: yes
+    gid: "{{ kibana_group_id }}"
+
+- name: Ensure optional kibana user is created with the correct id.
+  become: yes
+  notify: restart kibana
+  user:
+    state: present
+    name: "{{ kibana_user }}"
+    comment: kibana system user
+    system: yes
+    createhome: no
+    uid: "{{ kibana_user_id }}"
+    group: "{{ kibana_group }}"

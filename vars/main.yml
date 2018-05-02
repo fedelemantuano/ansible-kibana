@@ -1,0 +1,8 @@
+---
+kibana_package_url: "https://artifacts.elastic.co/downloads/kibana/kibana"
+kibana_conf_dir: "/etc/kibana"
+sysd_script: "/usr/lib/systemd/system/kibana.service"
+init_script: "/etc/init.d/kibana"
+# add supported features here
+supported_xpack_features: ["alerting", "monitoring", "graph", "security"]
+reserved_xpack_users: ["elastic", "kibana", "logstash_system"]

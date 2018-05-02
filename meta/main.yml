@@ -1,0 +1,22 @@
+---
+galaxy_info:
+  author: Fedele Mantuano
+  description: Kibana for Linux
+  company: "Fedele Mantuano"
+  license: "license (Apache)"
+  min_ansible_version: 2.3.2
+  platforms:
+    - name: EL
+      versions:
+        - 6
+        - 7
+    - name: Debian
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+  categories:
+    - system
+
+dependencies: []
