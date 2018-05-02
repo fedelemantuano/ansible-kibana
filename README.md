@@ -101,8 +101,3 @@ To define proxy globaly, set the following variables:
 * The playbook relies on the inventory_name of each host to ensure its directories are unique
 * Systemd is used for Ubuntu versions >= 15, Debian >=8, Centos >=7.  All other versions use init for service scripts.
 * In order to run x-pack tests a license file with security enabled is required. A trial license is appropriate. Set the environment variable `ES_XPACK_LICENSE_FILE` to the full path of the license file prior to running tests.
-
-## IMPORTANT NOTES RE PLUGIN MANAGEMENT
-
-* If the ES version is changed, all plugins will be removed.  Those listed in the playbook will be re-installed.  This is behaviour is required in ES 6.x.
-* If no plugins are listed in the playbook for a node, all currently installed plugins will be removed.
