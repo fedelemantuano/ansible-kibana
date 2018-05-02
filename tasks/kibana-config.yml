@@ -1,43 +1,42 @@
 ---
-# Configure Elasticsearch Node
+# Configure Kibana
 
-#Create required directories
+# Create required directories
 - name: Create Directories
   become: yes
-  file: path={{ item }} state=directory owner={{ es_user }} group={{ es_group }}
+  file: path={{ item }} state=directory owner={{ kibana_user }} group={{ kibana_group }}
   with_items:
-    - "{{pid_dir}}"
-    - "{{log_dir}}"
-    - "{{conf_dir}}"
+    - "{{ pid_dir }}"
+    - "{{ log_dir }}"
+    - "{{ conf_dir }}"
 
 - name: Create Data Directories
   become: yes
-  file: path={{ item }} state=directory owner={{ es_user }} group={{ es_group }}
+  file: path={{ item }} state=directory owner={{ kibana_user }} group={{ kibana_group }}
   with_items:
-    - "{{data_dirs}}"
+    - "{{ data_dirs }}"
 
-
-#Copy the config template
+# Copy the config template
 - name: Copy Configuration File
   become: yes
-  template: src=elasticsearch.yml.j2 dest={{conf_dir}}/elasticsearch.yml owner={{ es_user }} group={{ es_group }} mode=0644 force=yes
+  template: src=kibana.yml.j2 dest={{ conf_dir }}/kibana.yml owner={{ kibana_user }} group={{ kibana_group }} mode=0644 force=yes
   register: system_change
-  notify: restart elasticsearch
+  notify: restart kibana
 
-#Copy the instance specific default file
+# Copy the instance specific default file
 - name: Copy Default File for Instance
   become: yes
-  template: src=elasticsearch.j2 dest={{instance_default_file}} mode=0644 force=yes
-  notify: restart elasticsearch
+  template: src=kibana.j2 dest={{ instance_default_file }} mode=0644 force=yes
+  notify: restart kibana
 
-#Copy the instance specific init file
+# Copy the instance specific init file
 - name: Copy Debian Init File for Instance
   become: yes
-  template: src=init/debian/elasticsearch.j2 dest={{instance_init_script}} mode=0755 force=yes
+  template: src=init/debian/kibana.j2 dest={{instance_init_script}} mode=0755 force=yes
   when: ansible_os_family == 'Debian' and not use_system_d
   notify: restart elasticsearch
 
-#Copy the instance specific init file
+# Copy the instance specific init file
 - name: Copy Redhat Init File for Instance
   become: yes
   template: src=init/redhat/elasticsearch.j2 dest={{instance_init_script}} mode=0755 force=yes

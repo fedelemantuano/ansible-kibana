@@ -1,3 +1,4 @@
+---
 
 - name: reload systemd configuration
   become: yes
@@ -5,10 +6,10 @@
 
 # Restart service and ensure it is enabled
 
-- name: restart elasticsearch
+- name: restart kibana
   become: yes
-  service: name={{instance_init_script | basename}} state=restarted enabled=yes
+  service: name={{ instance_init_script | basename }} state=restarted enabled=yes
   when:
-    - es_restart_on_change
-    - es_start_service
-  register: es_restarted
+    - kibana_restart_on_change
+    - kibana_start_service
+  register: kibana_restarted
