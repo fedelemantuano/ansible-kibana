@@ -1,11 +1,10 @@
 ---
-
 - name: set fact force_install to no
   set_fact: force_install=no
 
 - name: set fact force_install to yes
   set_fact: force_install=yes
-  when: es_allow_downgrades
+  when: kibana_allow_downgrades
 
 - name: Debian - Install apt-transport-https to support https APT downloads
   become: yes
@@ -19,10 +18,10 @@
 
 - name: Debian - Add elasticsearch repository
   become: yes
-  apt_repository: repo={{ item.repo }} state={{ item.state}}
+  apt_repository: repo={{ item.repo }} state={{ item.state }}
   with_items:
-    - { repo: "{{ es_apt_url_old }}", state: "absent" }
-    - { repo: "{{ es_apt_url }}", state: "present" }
+    - {repo: "{{ es_apt_url_old }}", state: "absent"}
+    - {repo: "{{ es_apt_url }}", state: "present"}
   when: es_use_repository
 
 - name: Debian - Include versionlock
@@ -31,7 +30,7 @@
 
 - name: Debian - Ensure kibana is installed
   become: yes
-  apt: name=kibana{% if es_version is defined and es_version != "" %}={{ es_version }}{% endif %} state=present force={{force_install}} allow_unauthenticated={{ 'no' if es_apt_key else 'yes' }} cache_valid_time=86400
+  apt: name=kibana{% if es_version is defined and es_version != "" %}={{ es_version }}{% endif %} state=present force={{ force_install }} allow_unauthenticated={{ 'no' if es_apt_key else 'yes' }} cache_valid_time=86400
   when: es_use_repository
   register: debian_kibana_install_from_repo
   notify: restart kibana

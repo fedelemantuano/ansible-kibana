@@ -1,6 +1,6 @@
 ---
 # Add the kibana user before installing from packages.
-- name: Ensure optional elasticsearch group is created with the correct id.
+- name: Ensure optional kibana group is created with the correct id.
   become: yes
   notify: restart kibana
   group:

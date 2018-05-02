@@ -1,5 +1,4 @@
 ---
-
 # Commons parameters for all ELK Stack
 es_major_version: "6.x"
 es_version: "6.2.4"

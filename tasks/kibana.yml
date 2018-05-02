@@ -1,5 +1,4 @@
 ---
-
 - name: Include optional user and group creation.
   when: (kibana_user_id is defined) and (kibana_group_id is defined)
   include: kibana-optional-user.yml

@@ -1,5 +1,4 @@
 ---
-
 - name: set fact java_state to present
   set_fact: java_state="present"
 
@@ -9,7 +8,7 @@
 
 - name: RedHat - Ensure Java is installed
   become: yes
-  yum: name={{ java }} state={{java_state}}
+  yum: name={{ java }} state={{ java_state }}
   when: ansible_os_family == 'RedHat'
 
 - name: Get the installed java path
@@ -34,7 +33,7 @@
 
 - name: Debian - Ensure Java is installed
   become: yes
-  apt: name={{ java }} state={{java_state}}
+  apt: name={{ java }} state={{ java_state }}
   when: ansible_os_family == 'Debian'
 
 - name: register open_jdk version
@@ -43,7 +42,7 @@
   ignore_errors: yes
   changed_when: false
 
-#https://github.com/docker-library/openjdk/issues/19 - ensures tests pass due to java 8 broken certs
+# https://github.com/docker-library/openjdk/issues/19 - ensures tests pass due to java 8 broken certs
 - name: refresh the java ca-certificates
   become: yes
   command: /var/lib/dpkg/info/ca-certificates-java.postinst configure
