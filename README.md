@@ -47,7 +47,7 @@ The following illustrates applying configuration parameters to an Kibana instanc
   roles:
     #expand to all available parameters
     - { role: kibana, kibana_log_dir: "/var/log/kibana-node1",
-    es_config: {
+    kibana_config: {
         server.port: 5000, 
         server.host: "192.168.0.11",
         } 
