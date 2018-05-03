@@ -37,7 +37,7 @@ This role also uses [Ansible tags](http://docs.ansible.com/ansible/playbooks_tag
 All KIbana configuration parameters are supported.  This is achieved using a configuration map parameter 'kibana_config' which is serialized into the `kibana.yml` file.  
 The use of a map ensures the Ansible playbook does not need to be updated to reflect new/deprecated/plugin configuration parameters.
 
-In addition to the kibana_config map, several other parameters are supported for additional functions e.g. script installation.  These can be found in the role's defaults/main.yml file.
+These can be found in the role's defaults/main.yml file.
 
 The following illustrates applying configuration parameters to an Kibana instance.
 
@@ -46,7 +46,7 @@ The following illustrates applying configuration parameters to an Kibana instanc
   hosts: localhost
   roles:
     #expand to all available parameters
-    - { role: elasticsearch, kibana_log_dir: "/var/log/kibana-node1",
+    - { role: kibana, kibana_log_dir: "/var/log/kibana-node1",
     es_config: {
         server.port: 5000, 
         server.host: "192.168.0.11",
@@ -65,7 +65,7 @@ X-Pack features are not implemented.
 
 ### Additional Configuration
 
-In addition to es_config, the following parameters allow the customization of the Java and Elasticsearch versions as well as the role behaviour. Options include:
+In addition to kibana_config, the following parameters allow the customization of the Java and ELK versions as well as the role behaviour. Options include:
 
 * ```es_major_version```  Should be consistent with es_version. For versions >= 5.0 and < 6.0 this must be "5.x". For versions >= 6.0 this must be "6.x".
 * ```es_version``` (e.g. "6.2.4").
