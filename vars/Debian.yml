@@ -1,3 +1,4 @@
 ---
 java: "{% if es_java is defined %}{{es_java}}{% else %}openjdk-8-jre-headless{% endif %}"
 kibana_home: "/usr/share/kibana"
+default_file: "/etc/default/kibana"
