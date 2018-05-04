@@ -25,7 +25,13 @@ The simplest configuration therefore consists of:
 - name: Simple Example
   hosts: localhost
   roles:
-    - { role: kibana }
+      - {role: kibana,
+         kibana_config: {
+             server.name: "{{ inventory_hostname }}",
+             server.port: 5601,
+             server.host: "{{ ansible_default_ipv4.address }}",
+             elasticsearch.url: "http://{{ ansible_default_ipv4.address }}:9200"
+         }
 ```
 
 The above installs Kibana on 'localhost'.
