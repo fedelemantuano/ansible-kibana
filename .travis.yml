@@ -4,12 +4,10 @@ sudo: required
 env:
   - distribution: debian
     version: stretch
-  - distribution: debian
-    version: jessie
-  - distribution: ubuntu
-    version: trusty
   - distribution: ubuntu
     version: xenial
+  - distribution: centos
+    version: 7
 
 services:
   - docker
