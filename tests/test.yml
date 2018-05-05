@@ -22,7 +22,7 @@
          }
       }
   vars:
-      es_version: "6.2.3"
+      es_version: "6.2.4"
       es_scripts: false
       es_templates: false
       es_version_lock: false
