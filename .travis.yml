@@ -6,8 +6,8 @@ env:
     version: stretch
   - distribution: ubuntu
     version: xenial
-  #- distribution: centos
-    #version: 7
+  - distribution: centos
+    version: 7
 
 services:
   - docker
