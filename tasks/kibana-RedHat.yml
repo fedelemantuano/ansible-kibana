@@ -4,9 +4,9 @@
   yum: name=libselinux-python state=present update_cache=yes
   when: ( ansible_distribution == "CentOS" ) and ( ansible_distribution_major_version == "6" )
 
-- name: RedHat - add Kibana repo
+- name: RedHat - add Elasticsearch repo
   become: yes
-  template: src=kibana.repo dest=/etc/yum.repos.d/kibana-{{ es_major_version }}.repo
+  template: src=elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch-{{ es_major_version }}.repo
   when: es_use_repository
 
 - name: RedHat - include versionlock
