@@ -29,3 +29,4 @@
       es_heap_size: 1g
       es_api_host: "localhost"
       kibana_api_host: "localhost"
+      xpack.security.enabled: false
