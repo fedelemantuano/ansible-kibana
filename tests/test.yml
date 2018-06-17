@@ -10,7 +10,8 @@
              network.host: _local_,
              http.port: 9200,
              transport.tcp.port: 9300,
-             discovery.zen.ping.unicast.hosts: "localhost:9300"
+             discovery.zen.ping.unicast.hosts: "localhost:9300",
+             xpack.security.enabled: false
          }
       }
       - {role: kibana,
@@ -18,7 +19,8 @@
              server.name: "{{ inventory_hostname }}",
              server.port: 5601,
              server.host: "localhost",
-             elasticsearch.url: "http://localhost:9200"
+             elasticsearch.url: "http://localhost:9200",
+             xpack.security.enabled: false
          }
       }
   vars:
@@ -29,4 +31,3 @@
       es_heap_size: 1g
       es_api_host: "localhost"
       kibana_api_host: "localhost"
-      xpack.security.enabled: false
