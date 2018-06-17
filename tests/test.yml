@@ -30,4 +30,5 @@
       es_version_lock: false
       es_heap_size: 1g
       es_api_host: "localhost"
+      es_enable_xpack: false
       kibana_api_host: "localhost"
