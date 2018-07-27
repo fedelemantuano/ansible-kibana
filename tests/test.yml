@@ -7,7 +7,7 @@
              node.name: "{{ inventory_hostname }}",
              cluster.name: "elasticsearch_test",
              bootstrap.memory_lock: false,
-             network.host: _site_,
+             network.host: _local_,
              http.port: 9200,
              transport.tcp.port: 9300,
              discovery.zen.ping.unicast.hosts: "localhost:9300",
@@ -24,12 +24,12 @@
          }
       }
   vars:
-      es_version: "6.2.4"
+      es_version: "6.3.1"
       es_scripts: false
       es_templates: false
       es_version_lock: false
       es_heap_size: 1g
-      es_api_host: "{{ inventory_hostname }}"
+      es_api_host: localhost
       es_api_port: 9200
       es_enable_xpack: false
       kibana_api_host: "localhost"
