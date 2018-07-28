@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fedelemantuano/ansible-kibana.svg?branch=develop)](https://travis-ci.org/fedelemantuano/ansible-kibana)
+
 # ansible-kibana
 
 Ansible role for 6.x/5.x Kibana.  Currently this works on Debian and RedHat based linux systems.
