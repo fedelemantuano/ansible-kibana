@@ -86,12 +86,12 @@ server.name: "Elasticsearch"
 #elasticsearch.startupTimeout: 5000
 
 # Specifies the path where Kibana creates the process ID file.
-{% if es_config['pid.file'] is not defined %}
+{% if kibana_config['pid.file'] is not defined %}
 pid.file: {{ pid_dir }}/kibana.pid
 {% endif %}
 
 # Enables you specify a file where Kibana stores log output.
-{% if es_config['logging.dest'] is not defined %}
+{% if kibana_config['logging.dest'] is not defined %}
 logging.dest: {{ log_dir }}/kibana.log
 {% endif %}
 
