@@ -1,6 +1,10 @@
 ---
 # Check for mandatory parameters
 
+- name: fail when es_enable_xpack is true
+  fail: msg:"this role doesn't manage xpack, it can install only oss version"
+  when: es_enable_xpack
+
 - name: fail when es_proxy_port is not defined or is blank
   fail: msg="es_proxy_port must be specified and cannot be blank when es_proxy_host is defined"
   when: (es_proxy_port is not defined or es_proxy_port == '') and (es_proxy_host is defined and es_proxy_host != '')
