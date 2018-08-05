@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: kibana
   author: Fedele Mantuano
   description: Kibana for Linux
   company: "Fedele Mantuano"
@@ -16,7 +17,7 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - all
-  categories:
+  galaxy_tags:
     - system
 
 dependencies: []
