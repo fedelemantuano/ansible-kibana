@@ -20,20 +20,18 @@
     state: 'absent'
   when: kibana_package_name == 'kibana-oss'
 
-- name: RedHat - Install Elasticsearch
+- name: RedHat - Install kibana
   become: yes
   yum:
-    name: '{{ es_package_name }}{% if es_version is defined and es_version != ""  %}-{{ es_version }}{% endif %}'
+    name: '{{ kibana_package_name }}{% if es_version is defined and es_version != ""  %}-{{ es_version }}{% endif %}'
     state: present
     update_cache: yes
   when: es_use_repository
-  register: redhat_elasticsearch_install_from_repo
-  notify: restart elasticsearch
-  until: redhat_elasticsearch_install_from_repo.rc == 0
+  register: redhat_kibana_install_from_repo
+  notify: restart kibana
+  until: redhat_kibana_install_from_repo.rc == 0
   retries: 5
   delay: 10
-  environment:
-    ES_PATH_CONF: "/etc/elasticsearch"
 
 - name: RedHat - Install Kibana from url
   become: yes
