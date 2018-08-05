@@ -2,7 +2,8 @@
 
 # ansible-kibana
 
-Ansible role for 6.x/5.x Kibana.  Currently this works on Debian and RedHat based linux systems.
+Ansible role for 6.x/5.x Kibana. Currently this works on Debian and RedHat based linux systems.
+This role can't install _X-Pack_.
 
 ## Usage
 
@@ -16,6 +17,12 @@ git clone https://github.com/fedelemantuano/ansible-kibana.git
 cd /my/ansible/playbook
 mkdir -p roles
 ln -s /my/repos/ansible-kibana ./roles/kibana
+```
+
+or
+
+```
+ansible-galaxy install fedelemantuano.kibana
 ```
 
 Then create your playbook yaml adding the role kibana.
@@ -42,7 +49,7 @@ This role also uses [Ansible tags](http://docs.ansible.com/ansible/playbooks_tag
 
 ### Basic Kibana Configuration
 
-All KIbana configuration parameters are supported.  This is achieved using a configuration map parameter 'kibana_config' which is serialized into the `kibana.yml` file.  
+All Kibana configuration parameters are supported.  This is achieved using a configuration map parameter 'kibana_config' which is serialized into the `kibana.yml` file.  
 The use of a map ensures the Ansible playbook does not need to be updated to reflect new/deprecated/plugin configuration parameters.
 
 These can be found in the role's defaults/main.yml file.
