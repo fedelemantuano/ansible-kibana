@@ -20,20 +20,49 @@
   become: yes
   apt_repository: repo={{ item.repo }} state={{ item.state }}
   with_items:
-    - {repo: "{{ es_apt_url_old }}", state: "absent"}
-    - {repo: "{{ es_apt_url }}", state: "present"}
+    - { repo: "{{ es_apt_url_old }}", state: "absent" }
+    - { repo: "{{ es_apt_url }}", state: "present" }
   when: es_use_repository
+
+- name: Gracefully stop and remove kibana if we are switching to the oss version
+  when:
+    - es_package_name == 'kibana-oss'
+  block:
+  - name: Check if the kibana package is installed
+    shell: dpkg-query -W -f'${Status}' kibana
+    register: kibana_package
+    failed_when: False
+    changed_when: False
+
+- name: stop kibana
+    become: yes
+    service:
+      name: '{{ instance_init_script | basename }}'
+      state: stopped
+    when: kibana_package.stdout == 'install ok installed'
+
+- name: Debian - Remove kibana package if we are installing the oss package
+    become: yes
+    apt:
+      name: 'kibana'
+      state: absent
+    when: kibana_package.stdout == 'install ok installed'
+
+- name: Debian - Ensure kibana is installed
+  become: yes
+  apt:
+    name: '{{ kibana_package_name }}{% if es_version is defined and es_version != "" %}={{ es_version }}{% endif %}'
+    state: present
+    force: '{{ force_install }}'
+    allow_unauthenticated: "{{ 'no' if es_apt_key else 'yes' }}"
+    cache_valid_time: 86400
+  when: es_use_repository
+  register: debian_kibana_install_from_repo
+  notify: restart kibana
 
 - name: Debian - Include versionlock
   include: kibana-Debian-version-lock.yml
   when: kibana_version_lock
-
-- name: Debian - Ensure kibana is installed
-  become: yes
-  apt: name=kibana{% if es_version is defined and es_version != "" %}={{ es_version }}{% endif %} state=present force={{ force_install }} allow_unauthenticated={{ 'no' if es_apt_key else 'yes' }} cache_valid_time=86400
-  when: es_use_repository
-  register: debian_kibana_install_from_repo
-  notify: restart kibana
 
 - name: Debian - Download kibana from url
   get_url: url={% if kibana_custom_package_url is defined %}{{ kibana_custom_package_url }}{% else %}{{ kibana_package_url }}-{{ es_version }}-amd64.deb{% endif %} dest=/tmp/kibana-{{ es_version }}.deb validate_certs=no
