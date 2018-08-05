@@ -35,18 +35,18 @@
     changed_when: False
 
   - name: stop kibana
-      become: yes
-      service:
-        name: '{{ instance_init_script | basename }}'
-        state: stopped
-      when: kibana_package.stdout == 'install ok installed'
+    become: yes
+    service:
+      name: '{{ instance_init_script | basename }}'
+      state: stopped
+    when: kibana_package.stdout == 'install ok installed'
 
   - name: Debian - Remove kibana package if we are installing the oss package
-      become: yes
-      apt:
-        name: 'kibana'
-        state: absent
-      when: kibana_package.stdout == 'install ok installed'
+    become: yes
+    apt:
+      name: 'kibana'
+      state: absent
+    when: kibana_package.stdout == 'install ok installed'
 
 - name: Debian - Ensure kibana is installed
   become: yes
