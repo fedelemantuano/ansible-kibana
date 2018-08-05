@@ -6,16 +6,26 @@
 
 - name: RedHat - add Elasticsearch repo
   become: yes
-  template: src=elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch-{{ es_major_version }}.repo
+  template: src=elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch-{{ es_repo_name }}.repo
   when: es_use_repository
 
 - name: RedHat - include versionlock
   include: kibana-RedHat-version-lock.yml
   when: kibana_version_lock
 
-- name: RedHat - Install Kibana
+- name: RedHat - Remove non oss package if the old elasticsearch package is installed
   become: yes
-  yum: name=kibana{% if es_version is defined and es_version != ""  %}-{{ es_version }}{% endif %} state=present update_cache=yes
+  yum:
+    name: 'kibana'
+    state: 'absent'
+  when: kibana_package_name == 'kibana-oss'
+
+- name: RedHat - Install kibana
+  become: yes
+  yum:
+    name: '{{ kibana_package_name }}{% if es_version is defined and es_version != ""  %}-{{ es_version }}{% endif %}'
+    state: present
+    update_cache: yes
   when: es_use_repository
   register: redhat_kibana_install_from_repo
   notify: restart kibana

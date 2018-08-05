@@ -2,22 +2,27 @@
 - name: os-specific vars
   include_vars: "{{ ansible_os_family }}.yml"
   tags:
-      - always
+    - always
+
+- name: set compatibility variables
+  include: compatibility-variables.yml
+  tags:
+    - always
 
 - name: check-set-parameters
   include: kibana-parameters.yml
   tags:
-      - always
+    - always
 
 - name: include kibana.yml
   include: kibana.yml
   tags:
-      - install
+    - install
 
 - name: include kibana-config.yml
   include: kibana-config.yml
   tags:
-      - config
+    - config
 
 - name: flush handlers
   meta: flush_handlers
