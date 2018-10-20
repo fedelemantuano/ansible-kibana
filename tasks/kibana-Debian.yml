@@ -26,7 +26,7 @@
 
 - name: Gracefully stop and remove kibana if we are switching to the oss version
   when:
-    - es_package_name == 'kibana-oss'
+    - kibana_package_name == 'kibana-oss'
   block:
   - name: Check if the kibana package is installed
     shell: dpkg-query -W -f'${Status}' kibana
