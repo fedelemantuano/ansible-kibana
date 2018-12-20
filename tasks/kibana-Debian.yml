@@ -24,31 +24,39 @@
     - { repo: "{{ es_apt_url }}", state: "present" }
   when: es_use_repository
 
-- name: Gracefully stop and remove kibana if we are switching to the oss version
+- name: Discover "inverse" package name step 1
+  set_fact: kibana_inverted_package_name='kibana'
   when:
     - kibana_package_name == 'kibana-oss'
+
+- name: Discover "inverse" package name step 2
+  set_fact: kibana_inverted_package_name='kibana-oss'
+  when:
+    - kibana_package_name == 'kibana'
+
+- name: Gracefully stop and remove kibana if we are switching to the oss version.
   block:
-  - name: Check if the kibana package is installed
-    shell: dpkg-query -W -f'${Status}' kibana
-    register: kibana_package
+  - name: Check if other package is installed
+    shell: dpkg-query -W -f'${Status}' {{ kibana_inverted_package_name }}
+    register: kibana_inverted_package
     failed_when: False
     changed_when: False
 
-  - name: stop kibana
+  - name: Debian - stop {{ kibana_inverted_package_name }}
     become: yes
     service:
       name: '{{ instance_init_script | basename }}'
       state: stopped
-    when: kibana_package.stdout == 'install ok installed'
+    when: kibana_inverted_package.stdout == 'install ok installed'
 
-  - name: Debian - Remove kibana package if we are installing the oss package
+  - name: Debian - remove {{ kibana_inverted_package_name }}
     become: yes
     apt:
-      name: 'kibana'
+      name: "{{ kibana_inverted_package_name }}"
       state: absent
-    when: kibana_package.stdout == 'install ok installed'
+    when: kibana_inverted_package.stdout == 'install ok installed'
 
-- name: Debian - Ensure kibana is installed
+- name: Debian - Ensure {{ kibana_package_name }} is installed
   become: yes
   apt:
     name: '{{ kibana_package_name }}{% if es_version is defined and es_version != "" %}={{ es_version }}{% endif %}'

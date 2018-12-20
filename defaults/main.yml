@@ -1,8 +1,8 @@
 ---
 # Commons parameters for all ELK Stack
 es_major_version: "6.x"
-es_version: "6.4.2"
-es_enable_xpack: false
+es_version: "6.5.1"
+es_install_oss: false
 es_use_repository: true
 es_apt_key: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
 es_apt_url: "deb https://artifacts.elastic.co/packages/{{ es_repo_name }}/apt stable main"
