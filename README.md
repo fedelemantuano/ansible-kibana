@@ -35,13 +35,12 @@ The simplest configuration therefore consists of:
 - name: Simple Example
   hosts: localhost
   roles:
-      - {role: kibana,
-         kibana_config: {
-             server.name: "{{ inventory_hostname }}",
-             server.port: 5601,
-             server.host: "{{ ansible_default_ipv4.address }}",
-             elasticsearch.url: "http://{{ ansible_default_ipv4.address }}:9200"
-         }
+  - role: kibana
+    kibana_config:
+        server.name: "{{ inventory_hostname }}
+        server.port: 5601
+        server.host: "{{ ansible_default_ipv4.address }}"
+        elasticsearch.url: "http://{{ ansible_default_ipv4.address }}:9200"
 ```
 
 The above installs the Kibana oss version on 'localhost'.
@@ -62,12 +61,11 @@ The following illustrates applying configuration parameters to an Kibana instanc
   hosts: localhost
   roles:
     #expand to all available parameters
-    - { role: kibana, kibana_log_dir: "/var/log/kibana-node1",
-    kibana_config: {
+    - role: kibana
+      kibana_log_dir: "/var/log/kibana-node1"
+      kibana_config:
         server.port: 5000,
-        server.host: "192.168.0.11",
-        }
-    }
+        server.host: "192.168.0.11"
 ```
 
 ## Important Note
