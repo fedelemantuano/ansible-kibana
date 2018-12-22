@@ -72,7 +72,6 @@
   when: not es_use_repository
   register: kibana_install_from_package
   notify: restart kibana
-  register: result
-  until: result is not failed
+  until: kibana_install_from_package is not failed
   retries: 5
   delay: 10
