@@ -8,4 +8,4 @@
     es_repo_name: "{{ 'oss-' + es_major_version }}"
     kibana_package_name: "kibana-oss"
   when:
-    - es_install_oss
+    - kibana_install_oss

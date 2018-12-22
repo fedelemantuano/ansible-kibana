@@ -1,30 +1,36 @@
 ---
 - name: Install ELK stack
   hosts: all
+
   roles:
-      - {role: elasticsearch, es_instance_name: "{{ inventory_hostname }}",
-         es_enable_xpack: false,
-         es_config: {
-             node.name: "{{ inventory_hostname }}",
-             cluster.name: "elasticsearch_test",
-             bootstrap.memory_lock: false,
-             network.host: _local_,
-             http.port: 9200,
-             transport.tcp.port: 9300,
-             discovery.zen.ping.unicast.hosts: "localhost:9300",
-         }
-      }
-      - {role: kibana,
-         es_install_oss: false,
-         kibana_config: {
-             server.name: "{{ inventory_hostname }}",
-             server.port: 5601,
-             server.host: "localhost",
-             elasticsearch.url: "http://localhost:9200",
-         }
-      }
-  vars:
-      es_version: "6.5.1"
+    - {
+        role: elasticsearch,
+        es_instance_name: "{{ inventory_hostname }}",
+        es_enable_xpack: true,
+        es_xpack_features: ["monitoring","graph"],
+        es_config: {
+            node.name: "{{ inventory_hostname }}",
+            cluster.name: "elasticsearch_test",
+            bootstrap.memory_lock: false,
+            network.host: _local_,
+            http.port: 9200,
+            transport.tcp.port: 9300,
+            discovery.zen.ping.unicast.hosts: "localhost:9300",
+        }
+    }
+    - {
+        role: kibana,
+        kibana_install_oss: false,
+        kibana_config: {
+            server.name: "{{ inventory_hostname }}",
+            server.port: 5601,
+            server.host: "localhost",
+            elasticsearch.url: "http://localhost:9200",
+        }
+    }
+
+    vars:
+      es_version: "6.5.4"
       es_scripts: false
       es_templates: false
       es_version_lock: false

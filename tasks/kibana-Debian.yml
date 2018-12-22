@@ -19,7 +19,7 @@
 - name: Debian - Add elasticsearch repository
   become: yes
   apt_repository: repo={{ item.repo }} state={{ item.state }}
-  with_items:
+  loop:
     - { repo: "{{ es_apt_url_old }}", state: "absent" }
     - { repo: "{{ es_apt_url }}", state: "present" }
   when: es_use_repository
@@ -34,9 +34,9 @@
   when:
     - kibana_package_name == 'kibana'
 
-- name: Gracefully stop and remove kibana if we are switching to the oss version.
+- name: Gracefully stop and remove kibana if we are switching version.
   block:
-  - name: Check if other package is installed
+  - name: Debian - Check if other package is installed
     shell: dpkg-query -W -f'${Status}' {{ kibana_inverted_package_name }}
     register: kibana_inverted_package
     failed_when: False
