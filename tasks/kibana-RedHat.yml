@@ -4,21 +4,54 @@
   yum: name=libselinux-python state=present update_cache=yes
   when: ansible_distribution is match("CentOS") and ansible_distribution_major_version is match("6")
 
+- name: RedHat - remove Elasticsearch repo if exists
+  become: yes
+  shell: "rm -f /etc/yum.repos.d/elasticsearch-*.repo"
+  when: es_use_repository
+  failed_when: False
+  changed_when: False
+
 - name: RedHat - add Elasticsearch repo
   become: yes
   template: src=elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch-{{ es_repo_name }}.repo
   when: es_use_repository
+  changed_when: False
 
 - name: RedHat - include versionlock
   include: kibana-RedHat-version-lock.yml
   when: kibana_version_lock
 
-- name: RedHat - Remove non oss package if the old elasticsearch package is installed
-  become: yes
-  yum:
-    name: 'kibana'
-    state: 'absent'
-  when: kibana_package_name == 'kibana-oss'
+- name: Discover "inverse" package name step 1
+  set_fact: kibana_inverted_package_name='kibana'
+  when:
+    - kibana_package_name == 'kibana-oss'
+
+- name: Discover "inverse" package name step 2
+  set_fact: kibana_inverted_package_name='kibana-oss'
+  when:
+    - kibana_package_name == 'kibana'
+
+- name: Gracefully stop and remove kibana if we are switching version.
+  block:
+    - name: RedHat - Check if other package is installed
+      shell: yum list installed {{ kibana_inverted_package_name }}
+      register: kibana_inverted_package
+      failed_when: False
+      changed_when: False
+ 
+    - name: RedHat - stop {{ kibana_inverted_package_name }}
+      become: yes
+      service:
+        name: '{{ instance_init_script | basename }}'
+        state: stopped
+      when: "'Installed Packages' in kibana_inverted_package.stdout"
+
+    - name: RedHat - remove {{ kibana_inverted_package_name }}
+      become: yes
+      yum:
+        name: "{{ kibana_inverted_package_name }}"
+        state: absent
+      when: "'Installed Packages' in kibana_inverted_package.stdout"
 
 - name: RedHat - Install kibana
   become: yes

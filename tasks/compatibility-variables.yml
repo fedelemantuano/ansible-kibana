@@ -1,19 +1,11 @@
 ---
 - name: Set the defaults here otherwise they can't be overriden in the same play if the role is called twice
   set_fact:
-    es_open_xpack: true
-    es_install_xpack: false
     es_repo_name: "{{ es_major_version }}"
 
-- name: Detect if es_version is before X-Pack was open and included
-  set_fact:
-    es_open_xpack: false
-  when: "es_version | version_compare('6.3.0', '<')"
-
-- name: Use the oss repo and package if xpack is not being used
+- name: Use the oss repo and package if requested
   set_fact:
     es_repo_name: "{{ 'oss-' + es_major_version }}"
     kibana_package_name: "kibana-oss"
   when:
-    - es_open_xpack
-    - not es_enable_xpack
+    - kibana_install_oss
