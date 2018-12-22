@@ -60,9 +60,9 @@
     state: present
     update_cache: yes
   when: es_use_repository
-  register: redhat_kibana_install_from_repo
   notify: restart kibana
-  until: redhat_kibana_install_from_repo.rc == 0
+  register: result
+  until: result is not failed
   retries: 5
   delay: 10
 
@@ -72,3 +72,7 @@
   when: not es_use_repository
   register: kibana_install_from_package
   notify: restart kibana
+  register: result
+  until: result is not failed
+  retries: 5
+  delay: 10

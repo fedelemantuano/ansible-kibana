@@ -5,4 +5,7 @@
 
 - name: RedHat - lock kibana version
   become: yes
-  shell: yum versionlock delete 0:kibana* ; yum versionlock add {{ kibana_package_name }}{% if es_version is defined and es_version %}-{{ es_version }}{% endif %}
+  shell: >
+    yum versionlock delete 0:kibana* ; 
+    yum versionlock add {{ kibana_package_name }}
+    {% if es_version is defined and es_version %}-{{ es_version }}{% endif %}

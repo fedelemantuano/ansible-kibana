@@ -10,11 +10,19 @@
   become: yes
   apt: name=apt-transport-https state=present
   when: es_use_repository
+  register: result
+  until: result is not failed
+  retries: 5
+  delay: 10
 
 - name: Debian - Add Elasticsearch repository key
   become: yes
   apt_key: url="{{ es_apt_key }}" state=present
   when: es_use_repository and es_apt_key
+  register: result
+  until: result is not failed
+  retries: 5
+  delay: 10
 
 - name: Debian - Add elasticsearch repository
   become: yes
@@ -67,6 +75,10 @@
   when: es_use_repository
   register: debian_kibana_install_from_repo
   notify: restart kibana
+  register: result
+  until: result is not failed
+  retries: 5
+  delay: 10
 
 - name: Debian - Include versionlock
   include: kibana-Debian-version-lock.yml
