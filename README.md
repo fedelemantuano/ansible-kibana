@@ -4,7 +4,7 @@
 
 Ansible role for 6.x/5.x Kibana. Currently this works on Debian and RedHat based linux systems.
 
-This role can install _X-Pack_ version.
+This role can install `X-Pack` version and you can pass from `oss` version to `X-Pack` and vice versa.
 
 ## Usage
 
