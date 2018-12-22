@@ -59,7 +59,7 @@
 - name: Debian - Ensure {{ kibana_package_name }} is installed
   become: yes
   apt:
-    name: '{{ kibana_package_name }}{% if es_version is defined and es_version != "" %}={{ es_version }}{% endif %}'
+    name: '{{ kibana_package_name }}{% if es_version is defined and es_version %}={{ es_version }}{% endif %}'
     state: present
     force: '{{ force_install }}'
     allow_unauthenticated: "{{ 'no' if es_apt_key else 'yes' }}"

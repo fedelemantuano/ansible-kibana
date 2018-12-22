@@ -38,7 +38,7 @@
       register: kibana_inverted_package
       failed_when: False
       changed_when: False
- 
+
     - name: RedHat - stop {{ kibana_inverted_package_name }}
       become: yes
       service:
@@ -56,7 +56,7 @@
 - name: RedHat - Install kibana
   become: yes
   yum:
-    name: '{{ kibana_package_name }}{% if es_version is defined and es_version != ""  %}-{{ es_version }}{% endif %}'
+    name: '{{ kibana_package_name }}{% if es_version is defined and es_version %}-{{ es_version }}{% endif %}'
     state: present
     update_cache: yes
   when: es_use_repository
