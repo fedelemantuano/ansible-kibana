@@ -30,7 +30,3 @@
 - name: Make sure kibana is started
   service: name={{ instance_init_script | basename }} state=started enabled=yes
   when: kibana_start_service
-
-- name: Wait for kibana to startup
-  wait_for: host={{ kibana_api_host }} port={{ kibana_api_port }} delay=5 connect_timeout=1
-  when: kibana_restarted is defined and kibana_restarted.changed and kibana_start_service

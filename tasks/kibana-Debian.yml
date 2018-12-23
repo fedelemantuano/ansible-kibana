@@ -10,11 +10,19 @@
   become: yes
   apt: name=apt-transport-https state=present
   when: es_use_repository
+  register: result
+  until: result is not failed
+  retries: 5
+  delay: 10
 
 - name: Debian - Add Elasticsearch repository key
   become: yes
   apt_key: url="{{ es_apt_key }}" state=present
   when: es_use_repository and es_apt_key
+  register: result
+  until: result is not failed
+  retries: 5
+  delay: 10
 
 - name: Debian - Add elasticsearch repository
   become: yes
@@ -59,7 +67,7 @@
 - name: Debian - Ensure {{ kibana_package_name }} is installed
   become: yes
   apt:
-    name: '{{ kibana_package_name }}{% if es_version is defined and es_version != "" %}={{ es_version }}{% endif %}'
+    name: '{{ kibana_package_name }}{% if es_version is defined and es_version %}={{ es_version }}{% endif %}'
     state: present
     force: '{{ force_install }}'
     allow_unauthenticated: "{{ 'no' if es_apt_key else 'yes' }}"
@@ -67,13 +75,21 @@
   when: es_use_repository
   register: debian_kibana_install_from_repo
   notify: restart kibana
+  until: debian_kibana_install_from_repo is not failed
+  retries: 5
+  delay: 10
 
 - name: Debian - Include versionlock
   include: kibana-Debian-version-lock.yml
   when: kibana_version_lock
 
 - name: Debian - Download kibana from url
-  get_url: url={% if kibana_custom_package_url is defined %}{{ kibana_custom_package_url }}{% else %}{{ kibana_package_url }}-{{ es_version }}-amd64.deb{% endif %} dest=/tmp/kibana-{{ es_version }}.deb validate_certs=no
+  get_url:
+    url: >
+      {% if kibana_custom_package_url is defined %}{{ kibana_custom_package_url }}
+      {% else %}{{ kibana_package_url }}-{{ es_version }}-amd64.deb{% endif %}
+    dest: "/tmp/kibana-{{ es_version }}.deb"
+    validate_certs: no
   when: not es_use_repository
 
 - name: Debian - Ensure kibana is installed from downloaded package

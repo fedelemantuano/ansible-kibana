@@ -1,8 +1,18 @@
 ---
 - name: RedHat - install yum-version-lock
   become: yes
-  yum: name=yum-plugin-versionlock state=present update_cache=yes
+  yum:
+    name: yum-plugin-versionlock
+    state: present
+    update_cache: yes
+  register: result
+  until: result is not failed
+  retries: 5
+  delay: 10
 
 - name: RedHat - lock kibana version
   become: yes
-  shell: yum versionlock delete 0:kibana* ; yum versionlock add {{ kibana_package_name }}{% if es_version is defined and es_version != "" %}-{{ es_version }}{% endif %}
+  shell: >
+    yum versionlock delete 0:kibana* ;
+    yum versionlock add {{ kibana_package_name }}
+    {% if es_version is defined and es_version %}-{{ es_version }}{% endif %}

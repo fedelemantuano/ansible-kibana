@@ -19,7 +19,13 @@
 # Copy the config template
 - name: Copy Configuration File
   become: yes
-  template: src=kibana.yml.j2 dest={{ conf_dir }}/kibana.yml owner={{ kibana_user }} group={{ kibana_group }} mode=0644 force=yes
+  template:
+    src: kibana.yml.j2
+    dest: "{{ conf_dir }}/kibana.yml"
+    owner: "{{ kibana_user }}"
+    group: "{{ kibana_group }}"
+    mode: 0644
+    force: yes
   register: system_change
   notify: restart kibana
 
