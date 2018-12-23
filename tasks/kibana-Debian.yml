@@ -84,11 +84,11 @@
   when: kibana_version_lock
 
 - name: Debian - Download kibana from url
-  get_url: 
+  get_url:
     url: >
       {% if kibana_custom_package_url is defined %}{{ kibana_custom_package_url }}
-      {% else %}{{ kibana_package_url }}-{{ es_version }}-amd64.deb{% endif %} 
-    dest: "/tmp/kibana-{{ es_version }}.deb" 
+      {% else %}{{ kibana_package_url }}-{{ es_version }}-amd64.deb{% endif %}
+    dest: "/tmp/kibana-{{ es_version }}.deb"
     validate_certs: no
   when: not es_use_repository
 

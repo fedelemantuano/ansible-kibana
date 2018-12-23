@@ -68,7 +68,11 @@
 
 - name: RedHat - Install Kibana from url
   become: yes
-  yum: name={% if kibana_custom_package_url is defined %}{{ kibana_custom_package_url }}{% else %}{{ kibana_package_url }}-{{ es_version }}-x86_64.rpm{% endif %} state=present
+  yum:
+    name: >
+      {% if kibana_custom_package_url is defined %}{{ kibana_custom_package_url }}
+      {% else %}{{ kibana_package_url }}-{{ es_version }}-x86_64.rpm{% endif %}
+    state: present
   when: not es_use_repository
   register: kibana_install_from_package
   notify: restart kibana
