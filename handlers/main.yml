@@ -19,11 +19,11 @@
 # wait that kibana is up
 - name: Wait for kibana to startup
   listen: restart kibana
-  wait_for: 
-    host: "{{ kibana_api_host }}" 
+  wait_for:
+    host: "{{ kibana_api_host }}"
     port: "{{ kibana_api_port }}"
-    delay: 5 
+    delay: 5
     connect_timeout: 1
-  when: 
+  when:
     - kibana_restart_on_change
     - kibana_start_service
