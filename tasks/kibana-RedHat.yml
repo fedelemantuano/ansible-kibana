@@ -1,8 +1,15 @@
 ---
 - name: Ensure libselinux-python on CentOS 6.x
   become: yes
-  yum: name=libselinux-python state=present update_cache=yes
+  yum:
+    name: libselinux-python
+    state: present
+    update_cache: yes
   when: ansible_distribution is match("CentOS") and ansible_distribution_major_version is match("6")
+  register: result
+  until: result is not failed
+  retries: 5
+  delay: 10
 
 - name: RedHat - remove Elasticsearch repo if exists
   become: yes
