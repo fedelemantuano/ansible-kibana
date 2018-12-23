@@ -9,7 +9,7 @@
   listen: restart kibana
   become: yes
   service:
-    name: {{ instance_init_script | basename }}
+    name: "{{ instance_init_script | basename }}"
     state: restarted
     enabled: yes
   when:
