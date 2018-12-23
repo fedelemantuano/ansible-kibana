@@ -16,7 +16,7 @@
     - role: elasticsearch
       es_instance_name: "{{ inventory_hostname }}"
       es_enable_xpack: true
-      es_xpack_features: ["monitoring","graph"]
+      es_xpack_features: ["monitoring", "graph"]
       es_config:
         node.name: "{{ inventory_hostname }}"
         cluster.name: "elasticsearch_test"
