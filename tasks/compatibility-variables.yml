@@ -11,14 +11,14 @@
     - kibana_install_oss
 
 - name: Discover "inverse" package name (1/2)
-  set_fact: 
+  set_fact:
     kibana_inverted_package_name: kibana
     es_repo_name_inverted: "{{ es_major_version }}"
   when:
     - kibana_package_name == 'kibana-oss'
 
 - name: Discover "inverse" package name (2/2)
-  set_fact: 
+  set_fact:
     kibana_inverted_package_name: kibana-oss
     es_repo_name_inverted: "{{ 'oss-' + es_major_version }}"
   when:
