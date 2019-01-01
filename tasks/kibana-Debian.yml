@@ -32,16 +32,6 @@
     - { repo: "{{ es_apt_url }}", state: "present" }
   when: es_use_repository
 
-- name: Discover "inverse" package name step 1
-  set_fact: kibana_inverted_package_name='kibana'
-  when:
-    - kibana_package_name == 'kibana-oss'
-
-- name: Discover "inverse" package name step 2
-  set_fact: kibana_inverted_package_name='kibana-oss'
-  when:
-    - kibana_package_name == 'kibana'
-
 - name: Gracefully stop and remove kibana if we are switching version.
   block:
   - name: Debian - Check if other package is installed
