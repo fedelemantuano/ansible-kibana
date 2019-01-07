@@ -14,6 +14,7 @@
   set_fact:
     kibana_inverted_package_name: kibana
     es_repo_name_inverted: "{{ es_major_version }}"
+    es_other_apt_url: "deb https://artifacts.elastic.co/packages/{{ es_major_version }}/apt stable main"
   when:
     - kibana_package_name == 'kibana-oss'
 
@@ -21,5 +22,6 @@
   set_fact:
     kibana_inverted_package_name: kibana-oss
     es_repo_name_inverted: "{{ 'oss-' + es_major_version }}"
+    es_other_apt_url: "deb https://artifacts.elastic.co/packages/{{ 'oss-' + es_major_version }}/apt stable main"
   when:
     - kibana_package_name == 'kibana'
