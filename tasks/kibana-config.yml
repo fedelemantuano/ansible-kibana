@@ -3,8 +3,14 @@
 
 # Create required directories
 - name: Create Directories
+  notify: reload systemd configuration
   become: yes
-  file: path={{ item }} state=directory owner={{ kibana_user }} group={{ kibana_group }}
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ kibana_user }}"
+    group: "{{ kibana_group }}"
+    recurse: yes
   loop:
     - "{{ pid_dir }}"
     - "{{ log_dir }}"
@@ -12,7 +18,12 @@
 
 - name: Create Data Directories
   become: yes
-  file: path={{ item }} state=directory owner={{ kibana_user }} group={{ kibana_group }}
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ kibana_user }}"
+    group: "{{ kibana_group }}"
+    recurse: yes
   loop:
     - "{{ data_dirs }}"
 

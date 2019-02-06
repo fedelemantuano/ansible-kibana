@@ -11,32 +11,28 @@
   retries: 5
   delay: 10
 
+- name: RedHat - Check if repo exists
+  stat:
+    path: "/etc/yum.repos.d/elasticsearch-{{ es_repo_name_inverted }}.repo"
+  register: stat_repo
+
 - name: RedHat - remove Elasticsearch repo if exists
   become: yes
-  shell: "rm -f /etc/yum.repos.d/elasticsearch-*.repo"
-  when: es_use_repository
-  failed_when: False
-  changed_when: False
+  file:
+    path: "/etc/yum.repos.d/elasticsearch-{{ es_repo_name_inverted }}.repo"
+    state: absent
+  when: stat_repo.stat.exists
 
 - name: RedHat - add Elasticsearch repo
   become: yes
-  template: src=elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch-{{ es_repo_name }}.repo
+  template:
+    src: elasticsearch.repo
+    dest: "/etc/yum.repos.d/elasticsearch-{{ es_repo_name }}.repo"
   when: es_use_repository
-  changed_when: False
 
 - name: RedHat - include versionlock
   include: kibana-RedHat-version-lock.yml
   when: kibana_version_lock
-
-- name: Discover "inverse" package name step 1
-  set_fact: kibana_inverted_package_name='kibana'
-  when:
-    - kibana_package_name == 'kibana-oss'
-
-- name: Discover "inverse" package name step 2
-  set_fact: kibana_inverted_package_name='kibana-oss'
-  when:
-    - kibana_package_name == 'kibana'
 
 - name: Gracefully stop and remove kibana if we are switching version.
   block:
