@@ -37,7 +37,7 @@ The simplest configuration therefore consists of:
   roles:
   - role: kibana
     kibana_config:
-        server.name: "{{ inventory_hostname }}
+        server.name: "{{ inventory_hostname }}"
         server.port: 5601
         server.host: "{{ ansible_default_ipv4.address }}"
         elasticsearch.url: "http://{{ ansible_default_ipv4.address }}:9200"
