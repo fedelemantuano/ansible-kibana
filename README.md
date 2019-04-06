@@ -114,7 +114,6 @@ In addition to _kibana_config_, the following parameters allow the customization
 Both `kibana_user_id` and `kibana_group_id` must be set for the user and group ids to be set.
 
 * `kibana_install_oss`: defaults to true, so installs open source version.
-* `kibana_pid_dir`: defaults to "/var/run/kibana".
 * `kibana_data_dirs`: defaults to "/var/lib/kibana".
 * `kibana_log_dir`: defaults to "/var/log/kibana".
 * `kibana_restart_on_change`: defaults to true.  If false, changes will not result in Kibana being restarted.

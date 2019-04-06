@@ -34,9 +34,6 @@
   set_fact: instance_sysd_script={{ sysd_script }}
   when: use_system_d
 
-- name: set fact pid_dir
-  set_fact: pid_dir={{ kibana_pid_dir }}
-
 - name: set fact log_dir
   set_fact: log_dir={{ kibana_log_dir }}
 
