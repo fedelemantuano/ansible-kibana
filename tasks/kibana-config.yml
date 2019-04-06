@@ -12,7 +12,6 @@
     group: "{{ kibana_group }}"
     recurse: yes
   loop:
-    - "{{ pid_dir }}"
     - "{{ log_dir }}"
     - "{{ conf_dir }}"
 
