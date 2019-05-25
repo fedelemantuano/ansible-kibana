@@ -4,12 +4,12 @@
 
 - name: set fact force_install to yes
   set_fact: force_install=yes
-  when: kibana_allow_downgrades
+  when: kibana_allow_downgrades | bool
 
 - name: Debian - Install apt-transport-https to support https APT downloads
   become: yes
   apt: name=apt-transport-https state=present
-  when: es_use_repository
+  when: es_use_repository | bool
   register: result
   until: result is not failed
   retries: 5
@@ -18,7 +18,7 @@
 - name: Debian - Add Elasticsearch repository key
   become: yes
   apt_key: url="{{ es_apt_key }}" state=present
-  when: es_use_repository and es_apt_key
+  when: es_use_repository  | bool and es_apt_key | bool
   register: result
   until: result is not failed
   retries: 5
@@ -31,7 +31,7 @@
     - { repo: "{{ es_apt_url_old }}", state: "absent" }
     - { repo: "{{ es_apt_url }}", state: "present" }
     - { repo: "{{ es_other_apt_url }}", state: "absent" }
-  when: es_use_repository
+  when: es_use_repository | bool
 
 - name: Gracefully stop and remove kibana if we are switching version.
   block:
@@ -63,7 +63,7 @@
     force: '{{ force_install }}'
     allow_unauthenticated: "{{ 'no' if es_apt_key else 'yes' }}"
     cache_valid_time: 86400
-  when: es_use_repository
+  when: es_use_repository | bool
   register: debian_kibana_install_from_repo
   notify: restart kibana
   until: debian_kibana_install_from_repo is not failed
@@ -72,7 +72,7 @@
 
 - name: Debian - Include versionlock
   include: kibana-Debian-version-lock.yml
-  when: kibana_version_lock
+  when: kibana_version_lock | bool
 
 - name: Debian - Download kibana from url
   get_url:

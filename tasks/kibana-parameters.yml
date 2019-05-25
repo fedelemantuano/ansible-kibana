@@ -32,7 +32,7 @@
 
 - name: set fact instance_sysd_script
   set_fact: instance_sysd_script={{ sysd_script }}
-  when: use_system_d
+  when: use_system_d | bool
 
 - name: set fact log_dir
   set_fact: log_dir={{ kibana_log_dir }}

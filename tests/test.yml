@@ -3,7 +3,7 @@
   hosts: all
 
   vars:
-    es_version: "6.7.0"
+    es_version: "7.1.0"
     es_scripts: false
     es_templates: false
     es_version_lock: false
@@ -24,7 +24,8 @@
         network.host: _local_
         http.port: 9200
         transport.tcp.port: 9300
-        discovery.zen.ping.unicast.hosts: "localhost:9300"
+        cluster.initial_master_nodes:
+          - localhost
 
     - role: kibana
       kibana_install_oss: false
@@ -32,4 +33,4 @@
         server.name: "{{ inventory_hostname }}"
         server.port: 5601
         server.host: "localhost"
-        elasticsearch.url: "http://localhost:9200"
+        elasticsearch.hosts: "http://localhost:9200"

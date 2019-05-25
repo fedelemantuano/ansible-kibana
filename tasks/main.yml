@@ -29,4 +29,4 @@
 
 - name: Make sure kibana is started
   service: name={{ instance_init_script | basename }} state=started enabled=yes
-  when: kibana_start_service
+  when: kibana_start_service | bool

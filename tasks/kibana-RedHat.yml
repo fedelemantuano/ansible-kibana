@@ -28,11 +28,11 @@
   template:
     src: elasticsearch.repo
     dest: "/etc/yum.repos.d/elasticsearch-{{ es_repo_name }}.repo"
-  when: es_use_repository
+  when: es_use_repository | bool
 
 - name: RedHat - include versionlock
   include: kibana-RedHat-version-lock.yml
-  when: kibana_version_lock
+  when: kibana_version_lock | bool
 
 - name: Gracefully stop and remove kibana if we are switching version.
   block:
@@ -62,7 +62,7 @@
     name: '{{ kibana_package_name }}{% if es_version is defined and es_version %}-{{ es_version }}{% endif %}'
     state: present
     update_cache: yes
-  when: es_use_repository
+  when: es_use_repository | bool
   notify: restart kibana
   register: result
   until: result is not failed

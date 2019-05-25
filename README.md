@@ -2,7 +2,9 @@
 
 # ansible-kibana
 
-Ansible role for 6.x/5.x Kibana. Currently this works on Debian and RedHat based linux systems.
+**THIS ROLE IS FOR 7.x & 6.x**
+
+Ansible role for 7.x/6.x Kibana. Currently this works on Debian and RedHat based linux systems.
 
 This role can install `X-Pack` version and you can pass from `oss` version to `X-Pack` and vice versa.
 
@@ -40,7 +42,7 @@ The simplest configuration therefore consists of:
         server.name: "{{ inventory_hostname }}"
         server.port: 5601
         server.host: "{{ ansible_default_ipv4.address }}"
-        elasticsearch.url: "http://{{ ansible_default_ipv4.address }}:9200"
+        elasticsearch.hosts: "http://{{ ansible_default_ipv4.address }}:9200"
 ```
 
 The above installs the Kibana oss version on 'localhost'.

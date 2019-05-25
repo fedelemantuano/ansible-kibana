@@ -63,7 +63,7 @@
 - name: Copy Systemd File for Instance
   become: yes
   template: src=systemd/kibana.j2 dest={{ instance_sysd_script }} mode=0644 force=yes
-  when: use_system_d
+  when: use_system_d | bool
   notify:
     - reload systemd configuration
     - restart kibana
