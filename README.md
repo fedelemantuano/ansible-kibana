@@ -8,6 +8,8 @@ Ansible role for 7.x/6.x Kibana. Currently this works on Debian and RedHat based
 
 This role can install `X-Pack` version and you can pass from `oss` version to `X-Pack` and vice versa.
 
+You can't install Kibana `oss` version with Elastic Stack version `7.x`.
+
 ## Usage
 
 Create your Ansible playbook with your own tasks, and include the role ansible-kibana. You will have to have this repository accessible within the context of playbook, e.g.
@@ -51,7 +53,7 @@ This role also uses [Ansible tags](http://docs.ansible.com/ansible/playbooks_tag
 
 ## Basic Kibana Configuration
 
-All Kibana configuration parameters are supported.  This is achieved using a configuration map parameter 'kibana_config' which is serialized into the `kibana.yml` file.
+All Kibana configuration parameters are supported.  This is achieved using a configuration map parameter `kibana_config` which is serialized into the `kibana.yml` file.
 The use of a map ensures the Ansible playbook does not need to be updated to reflect new/deprecated/plugin configuration parameters.
 
 These can be found in the role's defaults/main.yml file.
@@ -96,11 +98,11 @@ for Kibana role.
 
 ### Additional Configuration
 
-In addition to _kibana_config_, the following parameters allow the customization of the Java and ELK versions as well as the role behaviour. Options include:
+In addition to `kibana_config`, the following parameters allow the customization of the Java and ELK versions as well as the role behaviour. Options include:
 
 * `es_major_version`: Should be consistent with es_version. For versions >= 5.0 and < 6.0 this must be "5.x". For versions >= 6.0 this must be "6.x".
 
-* `es_version`: e.g. "6.2.4".
+* `es_version`: e.g. "7.1.1".
 * `kibana_api_host`: The host name used for actions requiring HTTP. Defaults to "localhost".
 * `kibana_api_port`: The port used for actions requiring HTTP. Defaults to 5601.
 * `kibana_start_service`: (true (default) or false)
@@ -115,10 +117,21 @@ In addition to _kibana_config_, the following parameters allow the customization
 
 Both `kibana_user_id` and `kibana_group_id` must be set for the user and group ids to be set.
 
-* `kibana_install_oss`: defaults to true, so installs open source version.
+* `kibana_install_oss`: defaults to false, so installs complete version.
 * `kibana_data_dirs`: defaults to "/var/lib/kibana".
 * `kibana_log_dir`: defaults to "/var/log/kibana".
 * `kibana_restart_on_change`: defaults to true.  If false, changes will not result in Kibana being restarted.
+* `kibana_config`: configuration map parameter which is serialized into the `kibana.yml` file. The default is:
+
+```
+kibana_config:
+    server.name: "{{ inventory_hostname }}"
+    server.port: 5601
+    server.host: "{{ ansible_default_ipv4.address }}"
+    elasticsearch.hosts: "http://{{ ansible_default_ipv4.address }}:9200"
+    elasticsearch.username: "kibana"
+    elasticsearch.password: "changeme"
+```
 
 ### Proxy
 
@@ -134,3 +147,5 @@ To define proxy globaly, set the following variables:
 * The playbook relies on the inventory_name of each host to ensure its directories are unique.
 
 * Systemd is used for Ubuntu versions >= 15, Debian >=8, Centos >=7.  All other versions use init for service scripts.
+
+* ansible >= 2.5.0 is required.

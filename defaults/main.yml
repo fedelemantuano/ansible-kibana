@@ -1,21 +1,27 @@
 ---
 # Commons parameters for all ELK Stack
 es_major_version: "7.x"
-es_version: "7.1.0"
+es_version: "7.1.1"
 es_use_repository: true
 es_apt_key: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
 es_apt_url: "deb https://artifacts.elastic.co/packages/{{ es_repo_name }}/apt stable main"
 es_apt_url_old: "deb http://packages.elastic.co/elasticsearch/{{ es_repo_name }}/debian stable main"
 
 # Kibana parameters
-kibana_install_oss: true
+kibana_install_oss: false
 kibana_package_name: "kibana"
 kibana_version_lock: false
 kibana_start_service: true
 kibana_restart_on_change: true
 kibana_user: kibana
 kibana_group: kibana
-kibana_config: {}
+kibana_config:
+    server.name: "{{ inventory_hostname }}"
+    server.port: 5601
+    server.host: "{{ ansible_default_ipv4.address }}"
+    elasticsearch.hosts: "http://{{ ansible_default_ipv4.address }}:9200"
+    elasticsearch.username: "kibana"
+    elasticsearch.password: "changeme"
 
 # Need to provide default directories
 kibana_data_dirs: "/var/lib/kibana"
