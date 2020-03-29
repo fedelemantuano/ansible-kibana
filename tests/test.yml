@@ -3,7 +3,7 @@
   hosts: all
 
   vars:
-    es_version: "7.4.2"
+    es_version: "7.5.2"
     es_scripts: false
     es_templates: false
     es_version_lock: false
