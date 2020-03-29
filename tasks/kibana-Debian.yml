@@ -44,14 +44,14 @@
     service:
       name: '{{ instance_init_script | basename }}'
       state: stopped
-    when: kibana_inverted_package in ansible_facts.packages
+    when: kibana_inverted_package_name in ansible_facts.packages
 
   - name: Debian - remove {{ kibana_inverted_package_name }}
     become: yes
     apt:
       name: "{{ kibana_inverted_package_name }}"
       state: absent
-    when: kibana_inverted_package in ansible_facts.packages
+    when: kibana_inverted_package_name in ansible_facts.packages
 
 - name: Debian - Ensure {{ kibana_package_name }} is installed
   become: yes

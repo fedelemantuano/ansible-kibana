@@ -45,14 +45,14 @@
       service:
         name: '{{ instance_init_script | basename }}'
         state: stopped
-      when: kibana_inverted_package in ansible_facts.packages
+      when: kibana_inverted_package_name in ansible_facts.packages
 
     - name: RedHat - remove {{ kibana_inverted_package_name }}
       become: yes
       yum:
         name: "{{ kibana_inverted_package_name }}"
         state: absent
-      when: kibana_inverted_package in ansible_facts.packages
+      when: kibana_inverted_package_name in ansible_facts.packages
 
 - name: RedHat - Install kibana
   become: yes
