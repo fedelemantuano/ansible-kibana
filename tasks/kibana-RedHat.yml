@@ -37,24 +37,22 @@
 - name: Gracefully stop and remove kibana if we are switching version.
   block:
     - name: RedHat - Check if other package is installed
-      shell: yum list installed {{ kibana_inverted_package_name }}
-      register: kibana_inverted_package
-      failed_when: False
-      changed_when: False
+      package_facts:
+        manager: "auto"
 
     - name: RedHat - stop {{ kibana_inverted_package_name }}
       become: yes
       service:
         name: '{{ instance_init_script | basename }}'
         state: stopped
-      when: "'Installed Packages' in kibana_inverted_package.stdout"
+      when: kibana_inverted_package_name in ansible_facts.packages
 
     - name: RedHat - remove {{ kibana_inverted_package_name }}
       become: yes
       yum:
         name: "{{ kibana_inverted_package_name }}"
         state: absent
-      when: "'Installed Packages' in kibana_inverted_package.stdout"
+      when: kibana_inverted_package_name in ansible_facts.packages
 
 - name: RedHat - Install kibana
   become: yes
