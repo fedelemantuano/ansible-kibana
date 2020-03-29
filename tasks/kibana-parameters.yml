@@ -1,6 +1,13 @@
 ---
 # Check for mandatory parameters
 
+- name: fail when is selected kibana-oss for version 7.x
+  fail:
+    msg: You can't install 'kibana-oss' for version 7.x of Elastic stack
+  when: 
+    - kibana_package_name == 'kibana-oss'
+    - es_major_version == '7.x'
+
 - name: fail when es_proxy_port is not defined or is blank
   fail: msg="es_proxy_port must be specified and cannot be blank when es_proxy_host is defined"
   when: (es_proxy_port is not defined or not es_proxy_port) and (es_proxy_host is defined and es_proxy_host)
