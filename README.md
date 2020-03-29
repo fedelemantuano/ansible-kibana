@@ -102,7 +102,7 @@ In addition to `kibana_config`, the following parameters allow the customization
 
 * `es_major_version`: Should be consistent with es_version. For versions >= 5.0 and < 6.0 this must be "5.x". For versions >= 6.0 this must be "6.x".
 
-* `es_version`: e.g. "7.5.2".
+* `es_version`: e.g. "7.6.1".
 * `kibana_api_host`: The host name used for actions requiring HTTP. Defaults to "localhost".
 * `kibana_api_port`: The port used for actions requiring HTTP. Defaults to 5601.
 * `kibana_start_service`: (true (default) or false)
