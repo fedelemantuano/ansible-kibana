@@ -4,7 +4,7 @@
 - name: fail when is selected kibana-oss for version 7.x
   fail:
     msg: You can't install 'kibana-oss' for version 7.x of Elastic stack
-  when: 
+  when:
     - kibana_package_name == 'kibana-oss'
     - es_major_version == '7.x'
 
