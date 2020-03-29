@@ -5,7 +5,7 @@ galaxy_info:
   description: Kibana for Linux
   company: "Fedele Mantuano"
   license: "license (Apache)"
-  min_ansible_version: 2.3.2
+  min_ansible_version: 2.5.0
   platforms:
     - name: EL
       versions:
