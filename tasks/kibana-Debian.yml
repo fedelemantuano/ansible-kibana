@@ -51,7 +51,7 @@
     apt:
       name: "{{ kibana_inverted_package_name }}"
       state: absent
-    wwhen: kibana_inverted_package in ansible_facts.packages
+    when: kibana_inverted_package in ansible_facts.packages
 
 - name: Debian - Ensure {{ kibana_package_name }} is installed
   become: yes
