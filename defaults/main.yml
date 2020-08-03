@@ -6,7 +6,9 @@ es_use_repository: true
 es_apt_key: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
 es_apt_url: "deb https://artifacts.elastic.co/packages/{{ es_repo_name }}/apt stable main"
 es_apt_url_old: "deb http://packages.elastic.co/elasticsearch/{{ es_repo_name }}/debian stable main"
-
+#Elasticsearch username and password
+es_user: kibana
+es_pass: elastic
 # Kibana parameters
 kibana_install_oss: false
 kibana_package_name: "kibana"
@@ -20,8 +22,8 @@ kibana_config:
     server.port: 5601
     server.host: "{{ ansible_default_ipv4.address }}"
     elasticsearch.hosts: "http://{{ ansible_default_ipv4.address }}:9200"
-    elasticsearch.username: "kibana"
-    elasticsearch.password: "changeme"
+    elasticsearch.username: "{{ es_user}}"
+    elasticsearch.password: "{{ es_pass }}"
 
 # Need to provide default directories
 kibana_data_dirs: "/var/lib/kibana"
@@ -33,5 +35,30 @@ kibana_api_port: 5601
 # Since ansible 2.2 the following variables need to be defined
 # to allow the role to be conditionally played with a when condition.
 log_dir: ''
-conf_dir: ''
+conf_dir: '/etc/kibana'
 data_dirs: ''
+# SSL configuration parameters
+es_enable_http_ssl: false
+es_ssl_verification_mode: "none"
+es_validate_certs: "yes"
+es_ssl_certificate_path: "{{ conf_dir }}/certs"
+## SSL with PKCS12 file
+es_ssl_keystore: ''
+es_ssl_keystore_password: ''
+#Alternative SSL with private key and certificates
+es_ssl_cert: ''
+es_ssl_key: ''
+es_ssl_key_passphrase: ''
+##
+#Kibana Server SSL certificates
+######
+enable_server_ssl: false
+#Server SSL Keystore. Could be the same PKCS12 file.
+server_ssl_keystore: ''
+server_ssl_keystore_password: ''
+#Alternative SSL Server Certicficates
+server_ssl_cert: ''
+server_ssl_key: ''
+server_ssl_key_passphrase: ''
+#Optionally use the keystore for saving the user/pass
+secure_settings: false

@@ -42,26 +42,38 @@ server.name: "Elasticsearch"
 # the username and password that the Kibana server uses to perform maintenance on the Kibana
 # index at startup. Your Kibana users still need to authenticate with Elasticsearch, which
 # is proxied through the Kibana server.
-#elasticsearch.username: "user"
-#elasticsearch.password: "pass"
-
+{% if es_user and es_pass and not  secure_settings %}
+elasticsearch.username: "{{es_user}}"
+elasticsearch.password: "{{es_pass}}"
+{% endif %}
 # Enables SSL and paths to the PEM-format SSL certificate and SSL key files, respectively.
 # These settings enable SSL for outgoing requests from the Kibana server to the browser.
-#server.ssl.enabled: false
-#server.ssl.certificate: /path/to/your/server.crt
-#server.ssl.key: /path/to/your/server.key
+{% if enable_server_ssl and server_ssl_keystore %}
+server.ssl.enabled: true
+server.ssl.keystore.path: "{{ es_ssl_certificate_path }}/{{ server_ssl_keystore | basename }}"
+{% elif enable_server_ssl and server_ssl_key and server_ssl_cert %}
+server.ssl.enabled: true
+server.ssl.certificate: "{{ es_ssl_certificate_path }}/{{ server_ssl_cert | basename }}"
+server.ssl.key: "{{ es_ssl_certificate_path }}/{{ server_ssl_key | basename }}"
+{% endif %}
 
 # Optional settings that provide the paths to the PEM-format SSL certificate and key files.
 # These files validate that your Elasticsearch backend uses the same key files.
-#elasticsearch.ssl.certificate: /path/to/your/client.crt
-#elasticsearch.ssl.key: /path/to/your/client.key
+{% if es_ssl_keystore and es_ssl_keystore_password %}
+elasticsearch.ssl.keystore.path: "{{ es_ssl_certificate_path }}/{{ es_ssl_keystore | basename }}"
+{% elif es_ssl_key and es_ssl_cert %}
+elasticsearch.ssl.certificate: "{{ es_ssl_certificate_path }}/{{ es_ssl_cert | basename }}"
+elasticsearch.ssl.key: "{{ es_ssl_certificate_path }}/{{ es_ssl_key | basename }}"
+{% endif %}
 
 # Optional setting that enables you to specify a path to the PEM file for the certificate
 # authority for your Elasticsearch instance.
 #elasticsearch.ssl.certificateAuthorities: [ "/path/to/your/CA.pem" ]
 
 # To disregard the validity of SSL certificates, change this setting's value to 'none'.
-#elasticsearch.ssl.verificationMode: full
+{% if es_ssl_verification_mode  %}
+elasticsearch.ssl.verificationMode: "{{ es_ssl_verification_mode }}"
+{% endif %}
 
 # Time in milliseconds to wait for Elasticsearch to respond to pings. Defaults to the value of
 # the elasticsearch.requestTimeout setting.
