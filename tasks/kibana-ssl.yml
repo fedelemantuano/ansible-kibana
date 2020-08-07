@@ -108,15 +108,15 @@
 - name: Set Kibana Server SSL Key Passphrase
   become: yes
   shell: echo "{{ server_ssl_key_passphrase }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f server.ssl.keyPassphrase  --allow-root
-  when: server_ssl_key_passphrase and ( copy_server_certificates.changed or( es_kibana_same_keystore_or_cert and copy_es_certificates.changed ))
+  when: server_ssl_key_passphrase and ( copy_server_certificates.changed or( es_kibana_same_keystore_or_cert and copy_es_certificates.changed))
   ignore_errors: yes
 #Add String settings to the Keystore
-- name: Add Elasticsearch useraname to Kibana keystore
+- name: Add Es useraname to Kibana keystore
   become: yes
   shell: echo "{{ es_user }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f elasticsearch.username  --allow-root
   when: secure_settings and es_user
   ignore_errors: yes
-- name: Add Elasticsearch password to Kibana keystore
+- name: Add Es password to Kibana keystore
   become: yes
   shell: echo "{{ es_pass }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f elasticsearch.password  --allow-root
   when: secure_settings and es_pass
