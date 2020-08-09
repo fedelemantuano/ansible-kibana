@@ -24,6 +24,12 @@
   tags:
     - config
 
+- name: include kibana-ssl.yml
+  include: kibana-ssl.yml
+  when: es_enable_http_ssl or secure_settings
+  tags:
+    - config
+
 - name: flush handlers
   meta: flush_handlers
 
