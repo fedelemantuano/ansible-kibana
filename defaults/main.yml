@@ -62,3 +62,5 @@ server_ssl_key: ''
 server_ssl_key_passphrase: ''
 #Optionally use the keystore for saving the user/pass
 secure_settings: false
+#Enable OIDC integration
+es_enable_oidc: false

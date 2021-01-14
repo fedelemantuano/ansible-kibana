@@ -48,13 +48,37 @@ server_ssl_key_passphrase: elastic
 Stores the Kibana username/password in he Kibana keystore instead of the kibana.conf file.
 
 `secure_settings: true`
+4. Implement OIDC kibana configuration as documented here
+   [Configuring Kibana](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/oidc-kibana.html) amd  
+   [Set up OpenID Connect with Azure, Google, or Okta](https://www.elastic.co/guide/en/cloud/7.10/ec-securing-clusters-oidc-op.html)
+   [Secure your clusters with OpenID Connect]( https://www.elastic.co/guide/en/cloud-heroku/7.10/ech-secure-clusters-oidc.html)
+    
+This is controlled via `es_enable_oidc: true`
+And will add the following settings to `kibana.yml`
+```yaml
+xpack.security.authc.providers:
+  oidc.oidc1:
+    order: 0
+    realm: oidc1
+    description: "Log in with my OpenID Connect"
+  basic.basic1:
+    order: 1
+```   
+
+If you are using a Kibana instance of version 7.6 or earlier change the settings in your `kibana.yml` to:
+```yaml
+xpack.security.authc.providers: [oidc]
+xpack.security.authc.oidc.realm: "oidc1" 
+server.xsrf.whitelist: [/api/security/v1/oidc]
+```
+## Here is a sample Playbook with all the variables
 
 ```yaml
-  - name: Simple Example with SSL 
+  - name: Simple Kibana Playbook with SSL enabled 
     hosts: kibana-node
     roles:
     - role: fedelemantuano.kibana
-      es_version: 7.6.2
+      es_version: 7.10.1
       kibana_api_host: "{{ ansible_default_ipv4.address }}"
       #Secure communication with Elasticsearch
       es_enable_http_ssl: true
@@ -76,6 +100,7 @@ Stores the Kibana username/password in he Kibana keystore instead of the kibana.
       secure_settings: true
       es_user: kibana
       es_pass: changeme
+      es_enable_oidc: false
       kibana_config:
           server.name: "{{ inventory_hostname }}"
           server.port: 5601
@@ -85,6 +110,8 @@ Stores the Kibana username/password in he Kibana keystore instead of the kibana.
 
 
 ```
+
+
 
 ### Debugging tips
 
@@ -97,3 +124,24 @@ elasticsearch.username
 elasticsearch.password
 [root@kibana-host]#
 ``` 
+
+### Removing Kibana 
+
+Use this playbook for removing kibana from RPM based system.
+```yaml
+- hosts:  kibana-node
+  tasks:
+    - yum:
+        name: kibana
+        state: absent
+      become: true
+    - file:
+        path: "{{item}}"
+        state: absent
+      with_items:
+        - /etc/kibana
+        - /usr/share/kibana
+        - /var/lib/kibana
+      become: true
+
+```
