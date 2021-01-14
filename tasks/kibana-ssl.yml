@@ -80,6 +80,7 @@
   stat:
     path: "{{ kibana_data_dirs }}/kibana.keystore"
   register: keystore_exists
+  become: yes
 
 - name: Create Kibana keystore
   become: yes
