@@ -76,7 +76,7 @@ elasticsearch.ssl.verificationMode: "{{ es_ssl_verification_mode }}"
 {% endif %}
 
 #OIDC configuration
-{% if es_enable_oidc  %}
+{% if es_enable_oidc |bool == true %}
 xpack.security.authc.providers:
   oidc.oidc1:
     order: 0
