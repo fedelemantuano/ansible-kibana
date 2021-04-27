@@ -18,7 +18,7 @@
 - name: Debian - Add Elasticsearch repository key
   become: yes
   apt_key: url="{{ es_apt_key }}" state=present
-  when: es_use_repository  | bool and es_apt_key | bool
+  when: es_use_repository  | bool and es_apt_key is defined | bool
   register: result
   until: result is not failed
   retries: 5
@@ -26,7 +26,7 @@
 
 - name: Debian - Add elasticsearch repository
   become: yes
-  apt_repository: repo={{ item.repo }} state={{ item.state }}
+  apt_repository: repo={{ item.repo }} state={{ item.state }} update_cache=yes
   loop:
     - { repo: "{{ es_apt_url_old }}", state: "absent" }
     - { repo: "{{ es_apt_url }}", state: "present" }
