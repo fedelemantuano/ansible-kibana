@@ -1,13 +1,13 @@
 ---
 # Commons parameters for all ELK Stack
 es_major_version: "7.x"
-es_version: "7.6.1"
+es_version: "7.11.2"
 es_use_repository: true
 es_apt_key: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
 es_apt_url: "deb https://artifacts.elastic.co/packages/{{ es_repo_name }}/apt stable main"
 es_apt_url_old: "deb http://packages.elastic.co/elasticsearch/{{ es_repo_name }}/debian stable main"
 #Elasticsearch username and password
-es_user: kibana
+es_user: kibana_system
 es_pass: elastic
 # Kibana parameters
 kibana_install_oss: false
