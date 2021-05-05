@@ -78,7 +78,7 @@ server.xsrf.whitelist: [/api/security/v1/oidc]
     hosts: kibana-node
     roles:
     - role: fedelemantuano.kibana
-      es_version: 7.10.1
+      es_version: 7.11.2
       kibana_api_host: "{{ ansible_default_ipv4.address }}"
       #Secure communication with Elasticsearch
       es_enable_http_ssl: true
@@ -98,7 +98,7 @@ server.xsrf.whitelist: [/api/security/v1/oidc]
       #server_ssl_key_passphrase: elastic
       #Store kibana settings in the keystore
       secure_settings: true
-      es_user: kibana
+      es_user: kibana_system
       es_pass: changeme
       es_enable_oidc: false
       kibana_config:
@@ -107,6 +107,9 @@ server.xsrf.whitelist: [/api/security/v1/oidc]
           server.host: "{{ ansible_default_ipv4.address }}"
           elasticsearch.hosts: "https://{{ ansible_default_ipv4.address }}:9200"
           xpack.security.audit.enabled: true
+          #Add this when deploying behing AWS ALB Target Group
+          #server.basePath: "/kibana"
+          #server.rewriteBasePath: true
 
 
 ```
