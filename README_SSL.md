@@ -141,7 +141,7 @@ Use this playbook for removing kibana from RPM based system.
     - file:
         path: "{{item}}"
         state: absent
-      with_items:
+      loop:
         - /etc/kibana
         - /usr/share/kibana
         - /var/lib/kibana
