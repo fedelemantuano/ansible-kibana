@@ -78,46 +78,47 @@
 #Create KeyStore
 - name: Check that Kibana keystore exists
   stat:
-    path: "{{ kibana_data_dirs }}/kibana.keystore"
+    path: "{{ conf_dir }}/kibana.keystore"
   register: keystore_exists
+  become: yes
 
 - name: Create Kibana keystore
   become: yes
-  shell: "{{ kibana_home }}/bin/kibana-keystore create --allow-root"
+  shell: "{{ kibana_home }}/bin/kibana-keystore create"
   when:  not keystore_exists.stat.exists
   ignore_errors: yes
 #Set keystore or certificate passwords
 - name: Set Elasticsearch SSL Keystore Password
   become: yes
-  shell: echo "{{ es_ssl_keystore_password }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f elasticsearch.ssl.keystore.password  --allow-root
+  shell: echo "{{ es_ssl_keystore_password }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f elasticsearch.ssl.keystore.password
   when: es_ssl_keystore_password and copy_es_keystore.changed
   ignore_errors: yes
 
 - name: Set Elasticsearch SSL Key Passphrase
   become: yes
-  shell: echo "{{ es_ssl_key_passphrase }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f elasticsearch.ssl.keyPassphrase  --allow-root
+  shell: echo "{{ es_ssl_key_passphrase }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f elasticsearch.ssl.keyPassphrase
   when: es_ssl_key_passphrase and copy_es_certificates.changed
   ignore_errors: yes
 
 - name: Set Kibana Server SSL Keystore Password
   become: yes
-  shell: echo "{{ server_ssl_keystore_password }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f server.ssl.keystore.password  --allow-root
+  shell: echo "{{ server_ssl_keystore_password }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f server.ssl.keystore.password
   when: server_ssl_keystore_password and (copy_server_keystore.changed or (es_kibana_same_keystore_or_cert and copy_es_keystore.changed))
   ignore_errors: yes
 
 - name: Set Kibana Server SSL Key Passphrase
   become: yes
-  shell: echo "{{ server_ssl_key_passphrase }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f server.ssl.keyPassphrase  --allow-root
+  shell: echo "{{ server_ssl_key_passphrase }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f server.ssl.keyPassphrase
   when: server_ssl_key_passphrase and ( copy_server_certificates.changed or( es_kibana_same_keystore_or_cert and copy_es_certificates.changed))
   ignore_errors: yes
 #Add String settings to the Keystore
 - name: Add Es useraname to Kibana keystore
   become: yes
-  shell: echo "{{ es_user }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f elasticsearch.username  --allow-root
+  shell: echo "{{ es_user }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f elasticsearch.username
   when: secure_settings and es_user
   ignore_errors: yes
 - name: Add Es password to Kibana keystore
   become: yes
-  shell: echo "{{ es_pass }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f elasticsearch.password  --allow-root
+  shell: echo "{{ es_pass }}" | {{ kibana_home }}/bin/kibana-keystore add -x -f elasticsearch.password
   when: secure_settings and es_pass
   ignore_errors: yes

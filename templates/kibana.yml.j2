@@ -75,6 +75,16 @@ elasticsearch.ssl.key: "{{ es_ssl_certificate_path }}/{{ es_ssl_key | basename }
 elasticsearch.ssl.verificationMode: "{{ es_ssl_verification_mode }}"
 {% endif %}
 
+#OIDC configuration
+{% if es_enable_oidc |bool == true %}
+xpack.security.authc.providers:
+  oidc.oidc1:
+    order: 0
+    realm: oidc1
+    description: "Log in with my OpenID Connect"
+  basic.basic1:
+    order: 1
+{% endif %}
 # Time in milliseconds to wait for Elasticsearch to respond to pings. Defaults to the value of
 # the elasticsearch.requestTimeout setting.
 #elasticsearch.pingTimeout: 1500
