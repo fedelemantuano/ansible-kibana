@@ -49,7 +49,7 @@ Stores the Kibana username/password in he Kibana keystore instead of the kibana.
 
 `secure_settings: true`
 4. Implement OIDC kibana configuration as documented here
-   [Configuring Kibana](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/oidc-kibana.html) amd  
+   [Configuring Kibana](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/oidc-kibana.html) and  
    [Set up OpenID Connect with Azure, Google, or Okta](https://www.elastic.co/guide/en/cloud/7.10/ec-securing-clusters-oidc-op.html)
    [Secure your clusters with OpenID Connect]( https://www.elastic.co/guide/en/cloud-heroku/7.10/ech-secure-clusters-oidc.html)
     
