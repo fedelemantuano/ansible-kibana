@@ -15,10 +15,11 @@
     group: "{{ kibana_group }}"
     mode: "750"
 
-- name: Upload ES SSL Keystore certificate
+- name: Copy ES SSL Keystore certificate
   become: yes
   copy:
     src: "{{ item }}"
+    remote_src: "{{ es_ssl_remote_src }}"
     dest: "{{ es_ssl_certificate_path }}/{{ item | basename }}"
     owner: "{{ kibana_user }}"
     group: "{{ kibana_group }}"
@@ -30,10 +31,11 @@
   notify: restart kibana
   register: copy_es_keystore
 
-- name: Upload Client SSL key and certificate
+- name: Copy Client SSL key and certificate
   become: yes
   copy:
     src: "{{ item }}"
+    remote_src: "{{ es_ssl_remote_src }}"
     dest: "{{ es_ssl_certificate_path }}/{{ item | basename }}"
     owner: "{{ kibana_user }}"
     group: "{{ kibana_group }}"
@@ -46,10 +48,11 @@
   notify: restart kibana
   register: copy_es_certificates
 
-- name: Upload Kibana Server SSL Keystore certificate
+- name: Copy Kibana Server SSL Keystore certificate
   become: yes
   copy:
     src: "{{ item }}"
+    remote_src: "{{ server_ssl_remote_src }}"
     dest: "{{ es_ssl_certificate_path }}/{{ item | basename }}"
     owner: "{{ kibana_user }}"
     group: "{{ kibana_group }}"
@@ -60,10 +63,11 @@
   notify: restart kibana
   register: copy_server_keystore
 
-- name: Upload Kibana Server SSL key and certificate
+- name: Copy Kibana Server SSL key and certificate
   become: yes
   copy:
     src: "{{ item }}"
+    remote_src: "{{ server_ssl_remote_src }}"
     dest: "{{ es_ssl_certificate_path }}/{{ item | basename }}"
     owner: "{{ kibana_user }}"
     group: "{{ kibana_group }}"

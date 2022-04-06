@@ -43,6 +43,7 @@ es_enable_http_ssl: false
 es_ssl_verification_mode: "none"
 es_validate_certs: "yes"
 es_ssl_certificate_path: "{{ conf_dir }}/certs"
+es_ssl_remote_src: no
 ## SSL with PKCS12 file
 es_ssl_keystore: ''
 es_ssl_keystore_password: ''
@@ -54,6 +55,7 @@ es_ssl_key_passphrase: ''
 #Kibana Server SSL certificates
 ######
 enable_server_ssl: false
+server_ssl_remote_src: no
 #Server SSL Keystore. Could be the same PKCS12 file.
 server_ssl_keystore: ''
 server_ssl_keystore_password: ''
