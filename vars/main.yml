@@ -1,6 +1,6 @@
 ---
 kibana_package_url: "https://artifacts.elastic.co/downloads/kibana/kibana"
 kibana_conf_dir: "/etc/kibana"
-sysd_script: "/usr/lib/systemd/system/kibana.service"
+sysd_script: "{% if es_major_version is version('8', '>') %}/usr/lib/systemd/system/kibana.service{% else %}/etc/systemd/system/kibana.service{% endif %}"
 init_script: "/etc/init.d/kibana"
 pid_dir: "/var/run"
