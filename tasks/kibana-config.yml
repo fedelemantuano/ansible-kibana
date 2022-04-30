@@ -53,10 +53,10 @@
   notify: restart kibana
 
 # Copy the instance specific init file
-- name: Copy Redhat Init File for Instance
+- name: Copy Redhat/Rocky Init File for Instance
   become: yes
   template: src=init/redhat/kibana.j2 dest={{ instance_init_script }} mode=0755 force=yes
-  when: ansible_os_family == 'RedHat' and not use_system_d
+  when: (ansible_os_family == 'RedHat' or ansible_os_family == 'Rocky') and not use_system_d
   notify: restart kibana
 
 # Copy the systemd specific file if systemd is installed

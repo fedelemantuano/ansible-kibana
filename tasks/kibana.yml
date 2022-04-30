@@ -9,4 +9,4 @@
 
 - name: Include specific Kibana
   include: kibana-RedHat.yml
-  when: ansible_os_family is match('RedHat')
+  when: ansible_os_family is match('RedHat') or ansible_os_family is match('Rocky')
